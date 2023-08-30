@@ -1,13 +1,19 @@
-const app = require('express')()
 const consign = require('consign')
+import 'dotenv/config'
+import express, { Request, Response, Application} from 'express'
 
-const PORT: number = 3001
+const app: Application = express()
+const PORT = process.env.PORT || 3001
 
 consign()
     .then('./config/middlewares.ts')
+    .then('./api')
+    .then('./config/routes.ts')
     .into(app)
 
-
 app.listen(PORT, () => {
-    console.log('Running backend...')
+    console.log(`Running backend on port ${PORT}`)
 })
+
+import database from './sql/database'
+database()
